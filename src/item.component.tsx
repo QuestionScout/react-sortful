@@ -19,6 +19,8 @@ import {
 } from "./item";
 
 type Props<T extends ItemIdentifier> = {
+  className?: string;
+  style?: React.CSSProperties;
   /** A unique identifier in all items of list. */
   identifier: T;
   /** A unique and sequential index number in a parent group. */
@@ -53,6 +55,8 @@ export const Item = <T extends ItemIdentifier>(props: Props<T>) => {
 
   const wrapperElementRef = React.useRef<HTMLDivElement>(null);
 
+  const className = props.className || "";
+  const customStyle = props.style;
   const ancestorIdentifiers = [...groupContext.ancestorIdentifiers, props.identifier];
   const isGroup = props.isGroup ?? false;
   const isLocked = (listContext.isDisabled || props.isLocked) ?? false;
@@ -350,8 +354,9 @@ export const Item = <T extends ItemIdentifier>(props: Props<T>) => {
 
     return (
       <div
+        className={className}
         ref={wrapperElementRef}
-        style={{ boxSizing: "border-box", position: "static", padding: padding.join(" ") }}
+        style={{ ...customStyle, boxSizing: "border-box", position: "static", padding: padding.join(" ") }}
         {...binder()}
         {...(isUsedCustomDragHandlers ? {} : draggableBinder())}
       >
